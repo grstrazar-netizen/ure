@@ -9,6 +9,11 @@ interface ReportsViewProps {
   categories: Category[]
 }
 
+interface GroupedItem {
+  name: string
+  minutes: number
+}
+
 const totalMinutes = (items: Activity[]) =>
   items.reduce((sum, activity) => {
     const end = activity.end ? new Date(activity.end).getTime() : Date.now()
@@ -22,6 +27,8 @@ const fromMinutes = (min: number): string => {
   if (m === 0) return `${h} h`
   return `${h} h ${m} min`
 }
+
+const sortByMinutes = (groups: GroupedItem[]) => [...groups].sort((a, b) => b.minutes - a.minutes)
 
 export function ReportsView({ activities, clients, categories }: ReportsViewProps) {
   const now = new Date()
@@ -39,19 +46,37 @@ export function ReportsView({ activities, clients, categories }: ReportsViewProp
 
   const total = totalMinutes(monthlyActivities)
 
-  const byClient = clients
-    .map((client) => {
-      const items = monthlyActivities.filter((a) => a.clientId === client.id)
-      return { name: client.name, minutes: totalMinutes(items) }
-    })
-    .filter((item) => item.minutes > 0)
+  const byClient = useMemo(() => {
+    const clientGroups = clients
+      .map((client) => {
+        const items = monthlyActivities.filter((a) => a.clientId === client.id)
+        return { name: client.name, minutes: totalMinutes(items) }
+      })
+      .filter((item) => item.minutes > 0)
 
-  const byCategory = categories
-    .map((category) => {
-      const items = monthlyActivities.filter((a) => a.categoryId === category.id)
-      return { name: category.name, minutes: totalMinutes(items) }
-    })
-    .filter((item) => item.minutes > 0)
+    const uncategorizedMinutes = totalMinutes(monthlyActivities.filter((a) => a.clientId === null))
+    if (uncategorizedMinutes > 0) {
+      clientGroups.push({ name: 'Other', minutes: uncategorizedMinutes })
+    }
+
+    return sortByMinutes(clientGroups)
+  }, [clients, monthlyActivities])
+
+  const byCategory = useMemo(() => {
+    const categoryGroups = categories
+      .map((category) => {
+        const items = monthlyActivities.filter((a) => a.categoryId === category.id)
+        return { name: category.name, minutes: totalMinutes(items) }
+      })
+      .filter((item) => item.minutes > 0)
+
+    const uncategorizedMinutes = totalMinutes(monthlyActivities.filter((a) => a.categoryId === null))
+    if (uncategorizedMinutes > 0) {
+      categoryGroups.push({ name: 'Other', minutes: uncategorizedMinutes })
+    }
+
+    return sortByMinutes(categoryGroups)
+  }, [categories, monthlyActivities])
 
   return (
     <section className="page">
@@ -111,6 +136,7 @@ export function ReportsView({ activities, clients, categories }: ReportsViewProp
               <strong>{formatDuration(activity.start, activity.end)}</strong>
             </li>
           ))}
+          {monthlyActivities.length === 0 && <li className="muted">No entries for this month.</li>}
         </ul>
       </section>
 
