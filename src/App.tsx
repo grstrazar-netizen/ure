@@ -20,9 +20,7 @@ function App() {
     setData((prev) => ({
       ...prev,
       activities: prev.activities.map((activity) =>
-        activity.id === runningActivity.id
-          ? activityOps.update(activity, { end: new Date().toISOString() })
-          : activity,
+        activity.id === runningActivity.id ? activityOps.update(activity, { end: new Date().toISOString() }) : activity,
       ),
     }))
   }
@@ -32,9 +30,7 @@ function App() {
     setData((prev) => ({
       ...prev,
       activities: [
-        ...prev.activities.map((activity) =>
-          activity.end === null ? activityOps.update(activity, { end: now }) : activity,
-        ),
+        ...activityOps.stopRunning(prev.activities, now),
         activityOps.create({
           description: input.description,
           clientId: input.clientId,
@@ -58,7 +54,7 @@ function App() {
   const deleteActivity = (id: string) => {
     setData((prev) => ({
       ...prev,
-      activities: prev.activities.filter((activity) => activity.id !== id),
+      activities: activityOps.delete(prev.activities, id),
     }))
   }
 
@@ -77,16 +73,14 @@ function App() {
           onRenameClient={(id, name) =>
             setData((prev) => ({
               ...prev,
-              clients: prev.clients.map((item) => (item.id === id ? { ...item, name } : item)),
+              clients: listOps.renameClient(prev.clients, id, name),
             }))
           }
           onDeleteClient={(id) =>
             setData((prev) => ({
               ...prev,
-              clients: prev.clients.filter((item) => item.id !== id),
-              activities: prev.activities.map((activity) =>
-                activity.clientId === id ? { ...activity, clientId: null } : activity,
-              ),
+              clients: listOps.deleteClient(prev.clients, id),
+              activities: listOps.clearClientFromActivities(prev.activities, id),
             }))
           }
           onAddCategory={(name) =>
@@ -95,16 +89,14 @@ function App() {
           onRenameCategory={(id, name) =>
             setData((prev) => ({
               ...prev,
-              categories: prev.categories.map((item) => (item.id === id ? { ...item, name } : item)),
+              categories: listOps.renameCategory(prev.categories, id, name),
             }))
           }
           onDeleteCategory={(id) =>
             setData((prev) => ({
               ...prev,
-              categories: prev.categories.filter((item) => item.id !== id),
-              activities: prev.activities.map((activity) =>
-                activity.categoryId === id ? { ...activity, categoryId: null } : activity,
-              ),
+              categories: listOps.deleteCategory(prev.categories, id),
+              activities: listOps.clearCategoryFromActivities(prev.activities, id),
             }))
           }
           onAddTemplate={(label, text) =>
@@ -113,13 +105,13 @@ function App() {
           onRenameTemplate={(id, label, text) =>
             setData((prev) => ({
               ...prev,
-              templates: prev.templates.map((item) => (item.id === id ? { ...item, label, text } : item)),
+              templates: listOps.renameTemplate(prev.templates, id, label, text),
             }))
           }
           onDeleteTemplate={(id) =>
             setData((prev) => ({
               ...prev,
-              templates: prev.templates.filter((item) => item.id !== id),
+              templates: listOps.deleteTemplate(prev.templates, id),
             }))
           }
         />
