@@ -4,47 +4,67 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Flowtime Prototype</title>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="section prototype" aria-live="polite">
       <div class="container is-max-mobile">
-        <header class="prototype-header has-text-centered mb-3">
-          <p class="eyebrow">Voice-first time tracking prototype</p>
-          <h1 id="day-title" class="title is-2 mb-1">Today</h1>
-          <p id="day-subtitle" class="subtitle is-6"></p>
-        </header>
+        <section class="phone-shell hero-shell">
+          <header class="shell-top">
+            <button id="prev-day" class="button is-rounded is-small icon-btn" type="button">←</button>
+            <p class="shell-title">Time stack</p>
+            <button id="open-voice" class="button is-rounded is-small icon-btn" type="button">🎙️</button>
+          </header>
 
-        <section class="deck" aria-label="Daily card">
-          <article class="daily-card box">
-            <div class="card-top has-text-centered">
-              <p class="card-title">Things to track</p>
-              <p class="card-number">No. <span id="card-sequence"></span></p>
+          <div class="hero-content">
+            <p id="day-subtitle" class="hero-day">Today</p>
+            <h1 id="day-title" class="hero-heading">Morning Workout</h1>
+
+            <div class="chips-row">
+              <span class="tag app-chip">#client</span>
+              <span class="tag app-chip">#task</span>
+              <span class="tag app-chip">#voice</span>
             </div>
 
-            <ul id="activity-list" class="activity-list"></ul>
+            <div class="mini-list">
+              <p><span>◌</span> Voice command starts timer</p>
+              <p><span>◌</span> AI auto-tags client + rate</p>
+            </div>
+          </div>
 
-            <button id="manual-entry" class="button is-fullwidth is-light is-rounded manual-entry" type="button">
-              + Add manual entry
-            </button>
-          </article>
+          <button id="start-track" class="button start-btn" type="button">▶ Start tracking</button>
         </section>
 
-        <nav class="fixed-grid has-2-cols day-nav" aria-label="Change day">
-          <div class="grid">
-            <button id="prev-day" class="button is-fullwidth" type="button">← Previous day</button>
-            <button id="next-day" class="button is-fullwidth" type="button">Next day →</button>
-          </div>
-        </nav>
+        <section class="phone-shell activity-shell">
+          <header class="activity-header">
+            <div class="day-switch">
+              <button id="prev-day-mini" class="button is-small is-light" type="button">←</button>
+              <button id="next-day" class="button is-small is-light" type="button">→</button>
+            </div>
+            <p class="activity-top">Calendar</p>
+            <h2 class="title is-3">Daily Activity</h2>
+            <p class="date-pill">No. <span id="card-sequence"></span></p>
+          </header>
 
-        <section class="fixed-grid has-2-cols actions" aria-label="Prototype quick actions">
-          <div class="grid">
-            <button id="open-voice" class="button is-fullwidth is-success action-main" type="button">🎙️ Speak to track</button>
-            <button id="show-pdf" class="button is-fullwidth" type="button">PDF preview</button>
+          <ul id="activity-list" class="activity-list"></ul>
+
+          <div class="tile-grid">
+            <article class="stat-tile tan">
+              <p class="tile-title">Voice logs</p>
+              <p id="voice-count" class="tile-value">0</p>
+              <p class="tile-meta">entries today</p>
+            </article>
+            <article class="stat-tile coral">
+              <p class="tile-title">Amount</p>
+              <p id="amount-total" class="tile-value">€0</p>
+              <p class="tile-meta">estimated</p>
+            </article>
+          </div>
+
+          <div class="action-row">
+            <button id="show-pdf" class="button is-fullwidth">PDF preview</button>
+            <button id="manual-entry" class="button is-fullwidth is-light">+ Manual entry</button>
           </div>
         </section>
       </div>

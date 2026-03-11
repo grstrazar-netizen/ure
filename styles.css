@@ -1,71 +1,130 @@
 :root {
-  --bg: #f5f2ea;
-  --paper: #fffdf8;
-  --line: #d3cdc2;
-  --text: #2e2a26;
-  --muted: #6f6a61;
-  --accent: #88926f;
+  --ink: #ffffff;
+  --shell: #ecebe6;
+  --line: #d9d8d2;
+  --dark: #1f2831;
+  --muted: #6f736f;
 }
 
 body {
   min-height: 100vh;
-  background: radial-gradient(circle at top, #f9f5ee, #efe9dd 65%);
-  color: var(--text);
+  background: #e7e8e7;
 }
 
 .prototype {
-  max-width: 420px;
+  max-width: 460px;
   margin: 0 auto;
-  padding-top: 1rem;
 }
 
-.eyebrow {
-  margin: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.72rem;
-  color: var(--muted);
+.phone-shell {
+  border-radius: 34px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 16px 40px rgba(27, 28, 30, 0.12);
 }
 
-#day-title {
-  font-family: "Cormorant Garamond", Georgia, serif;
-}
-
-#day-subtitle {
-  color: var(--muted);
-}
-
-.daily-card {
-  background: var(--paper);
-  border-radius: 22px;
-  border: 1px solid var(--line);
-  box-shadow: 0 12px 30px rgba(59, 46, 24, 0.1);
-  min-height: 73vh;
-  padding: 1rem 0.9rem 0.8rem;
+.hero-shell {
+  color: var(--ink);
+  min-height: 500px;
+  background:
+    linear-gradient(160deg, rgba(21, 26, 31, 0.76), rgba(21, 26, 31, 0.45)),
+    url("https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=900&q=80") center / cover;
   display: grid;
   grid-template-rows: auto 1fr auto;
 }
 
-.card-top {
-  margin-bottom: 0.7rem;
+.shell-top {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
 }
 
-.card-title {
+.shell-title {
+  text-align: center;
   margin: 0;
-  font-family: "Cormorant Garamond", Georgia, serif;
-  font-size: 1.4rem;
+  opacity: 0.95;
 }
 
-.card-number {
-  margin: 0.2rem 0 0;
-  color: var(--muted);
+.icon-btn {
+  border: none;
+}
+
+.hero-content {
+  align-self: center;
+}
+
+.hero-day {
+  margin: 0;
+  opacity: 0.85;
+}
+
+.hero-heading {
+  margin: 0.2rem 0 0.8rem;
+  line-height: 1;
+  font-size: 3rem;
+  color: #f7f8f8;
+}
+
+.chips-row {
+  display: flex;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.app-chip {
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.mini-list {
+  margin-top: 1rem;
+}
+
+.mini-list p {
+  margin: 0.35rem 0;
+}
+
+.start-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 0.75rem;
+  font-weight: 600;
+}
+
+.activity-shell {
+  background: var(--shell);
+  color: #1f2020;
+}
+
+.activity-header {
+  text-align: center;
+}
+
+
+.day-switch {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.45rem;
+}
+.activity-top {
   font-size: 0.85rem;
+  margin: 0;
+}
+
+.date-pill {
+  display: inline-block;
+  border: 1px solid #b9b8b2;
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.8rem;
 }
 
 .activity-list {
   list-style: none;
   padding: 0;
-  margin: 0;
+  margin: 1rem 0;
 }
 
 .activity-row {
@@ -73,16 +132,15 @@ body {
   grid-template-columns: 20px 1fr auto;
   gap: 0.45rem;
   align-items: center;
-  min-height: 2.25rem;
+  min-height: 2.2rem;
   border-bottom: 1px solid var(--line);
-  font-size: 0.88rem;
 }
 
 .circle {
   width: 14px;
   height: 14px;
   border-radius: 50%;
-  border: 1px solid #b5afa2;
+  border: 1px solid #9f9e99;
 }
 
 .activity-main {
@@ -93,24 +151,45 @@ body {
 
 .activity-meta {
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: 0.85rem;
 }
 
-.manual-entry {
-  margin-top: 0.8rem;
-  border: 1px dashed #b2ab9e;
-  background: transparent;
-  color: var(--muted);
+.tile-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.7rem;
+  margin-bottom: 0.8rem;
 }
 
-.day-nav,
-.actions {
-  margin-top: 0.8rem;
+.stat-tile {
+  border-radius: 18px;
+  padding: 0.8rem;
+  color: #fff;
 }
 
-.action-main {
-  grid-column: 1 / -1;
-  background: var(--accent);
+.stat-tile.tan {
+  background: #bc9564;
+}
+
+.stat-tile.coral {
+  background: #e95f4f;
+}
+
+.tile-title,
+.tile-meta {
+  margin: 0;
+}
+
+.tile-value {
+  margin: 0.35rem 0;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.55rem;
 }
 
 .panel-box {

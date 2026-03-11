@@ -16,7 +16,10 @@ const daySubtitle = document.getElementById("day-subtitle");
 const cardSequence = document.getElementById("card-sequence");
 const activityList = document.getElementById("activity-list");
 const prevDay = document.getElementById("prev-day");
+const prevDayMini = document.getElementById("prev-day-mini");
 const nextDay = document.getElementById("next-day");
+const voiceCount = document.getElementById("voice-count");
+const amountTotal = document.getElementById("amount-total");
 
 const voiceModal = document.getElementById("voice-modal");
 const aiModal = document.getElementById("ai-modal");
@@ -27,6 +30,7 @@ const aiPreview = document.getElementById("ai-preview");
 const pdfPreview = document.getElementById("pdf-preview");
 
 const openVoice = document.getElementById("open-voice");
+const startTrack = document.getElementById("start-track");
 const showPdf = document.getElementById("show-pdf");
 const downloadPdf = document.getElementById("download-pdf");
 
@@ -59,10 +63,17 @@ function getCurrentDate() {
   return date;
 }
 
+function sumAmount(rows) {
+  return rows.reduce((sum, row) => {
+    const amount = Number((row.amount || "").replace(/[^0-9.]/g, ""));
+    return sum + (Number.isFinite(amount) ? amount : 0);
+  }, 0);
+}
+
 function renderRows(rows) {
   activityList.innerHTML = "";
   const padded = [...rows];
-  while (padded.length < 12) {
+  while (padded.length < 6) {
     padded.push({ task: "", duration: "", amount: "" });
   }
 
@@ -87,6 +98,8 @@ function renderDay() {
   dayTitle.textContent = labels.title;
   daySubtitle.textContent = labels.detail;
   cardSequence.textContent = key;
+  voiceCount.textContent = `${rows.filter((row) => row.task && row.task !== "No logs yet").length}`;
+  amountTotal.textContent = `€${sumAmount(rows).toFixed(0)}`;
   renderRows(rows);
 }
 
@@ -107,15 +120,19 @@ document.querySelectorAll("[data-close]").forEach((button) => {
   });
 });
 
-prevDay.addEventListener("click", () => {
+function goPreviousDay() {
   offset -= 1;
   renderDay();
-});
+}
 
-nextDay.addEventListener("click", () => {
+function goNextDay() {
   offset += 1;
   renderDay();
-});
+}
+
+prevDay.addEventListener("click", goPreviousDay);
+prevDayMini.addEventListener("click", goPreviousDay);
+nextDay.addEventListener("click", goNextDay);
 
 let touchStartX = 0;
 document.addEventListener("touchstart", (event) => {
@@ -132,6 +149,7 @@ document.addEventListener("touchend", (event) => {
 });
 
 openVoice.addEventListener("click", () => openModal(voiceModal));
+startTrack.addEventListener("click", () => openModal(voiceModal));
 
 parseVoice.addEventListener("click", () => {
   closeModal(voiceModal);
@@ -157,10 +175,7 @@ confirmEntry.addEventListener("click", () => {
 showPdf.addEventListener("click", () => {
   const key = asKey(getCurrentDate());
   const rows = entriesByDay[key] ?? [];
-  const total = rows.reduce((sum, row) => {
-    const amount = Number((row.amount || "").replace(/[^0-9.]/g, ""));
-    return sum + (Number.isFinite(amount) ? amount : 0);
-  }, 0);
+  const total = sumAmount(rows);
 
   pdfPreview.innerHTML = `
     <strong>Flowtime daily report</strong><br>
