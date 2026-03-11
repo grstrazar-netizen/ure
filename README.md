@@ -1,10 +1,15 @@
-# Task Track
+# Flowtime PWA Prototype
 
-A simple phone-first web app for:
+Clickable mobile-first prototype for a voice-driven time tracking app, built with Bulma CSS.
 
-- Recording daily tasks
-- Planning future tasks
-- Generating a monthly report of completed tasks
+## Prototype includes
+
+- Visual style inspired by modern rounded mobile fitness/productivity apps
+- Hero "Time stack" screen with quick start tracking action
+- Daily Activity screen with swipe day navigation and summary tiles
+- Voice capture modal
+- AI parsing confirmation modal
+- PDF preview modal and download placeholder action
 
 ## Run locally
 
@@ -12,13 +17,4 @@ A simple phone-first web app for:
 python3 -m http.server 4173
 ```
 
-Then open `http://localhost:4173`.
-
-## How monthly report works
-
-- Mark tasks as **Done**.
-- A completion date is saved automatically.
-- Choose a month in the **Monthly Report** section.
-- The app lists all tasks completed in that month.
-
-All data is stored in browser `localStorage`.
+Open `http://localhost:4173`.

@@ -3,62 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task Track</title>
+    <title>Flowtime Prototype</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <header class="app-header">
-        <h1>Task Track</h1>
-        <p>Log daily and future tasks from your phone.</p>
-      </header>
+    <main class="section prototype" aria-live="polite">
+      <div class="container is-max-mobile">
+        <section class="phone-shell hero-shell">
+          <header class="shell-top">
+            <button id="prev-day" class="button is-rounded is-small icon-btn" type="button">←</button>
+            <p class="shell-title">Time stack</p>
+            <button id="open-voice" class="button is-rounded is-small icon-btn" type="button">🎙️</button>
+          </header>
 
-      <section class="card" aria-labelledby="add-task-title">
-        <h2 id="add-task-title">Add Task</h2>
-        <form id="task-form" class="task-form">
-          <label>
-            Task details
-            <textarea id="task-text" required maxlength="240" placeholder="Example: Prepare weekly project update"></textarea>
-          </label>
+          <div class="hero-content">
+            <p id="day-subtitle" class="hero-day">Today</p>
+            <h1 id="day-title" class="hero-heading">Morning Workout</h1>
 
-          <label>
-            Planned date
-            <input id="task-date" type="date" required />
-          </label>
+            <div class="chips-row">
+              <span class="tag app-chip">#client</span>
+              <span class="tag app-chip">#task</span>
+              <span class="tag app-chip">#voice</span>
+            </div>
 
-          <button type="submit">Save Task</button>
-        </form>
-      </section>
+            <div class="mini-list">
+              <p><span>◌</span> Voice command starts timer</p>
+              <p><span>◌</span> AI auto-tags client + rate</p>
+            </div>
+          </div>
 
-      <section class="card" aria-labelledby="task-list-title">
-        <h2 id="task-list-title">My Tasks</h2>
-        <div id="empty-state" class="empty-state">No tasks yet. Add one above.</div>
-        <ul id="task-list" class="task-list" aria-live="polite"></ul>
-      </section>
+          <button id="start-track" class="button start-btn" type="button">▶ Start tracking</button>
+        </section>
 
-      <section class="card" aria-labelledby="report-title">
-        <h2 id="report-title">Monthly Report</h2>
-        <label>
-          Select month
-          <input id="report-month" type="month" />
-        </label>
-        <div id="report-summary" class="report-summary"></div>
-        <ul id="report-list" class="report-list"></ul>
-      </section>
+        <section class="phone-shell activity-shell">
+          <header class="activity-header">
+            <div class="day-switch">
+              <button id="prev-day-mini" class="button is-small is-light" type="button">←</button>
+              <button id="next-day" class="button is-small is-light" type="button">→</button>
+            </div>
+            <p class="activity-top">Calendar</p>
+            <h2 class="title is-3">Daily Activity</h2>
+            <p class="date-pill">No. <span id="card-sequence"></span></p>
+          </header>
+
+          <ul id="activity-list" class="activity-list"></ul>
+
+          <div class="tile-grid">
+            <article class="stat-tile tan">
+              <p class="tile-title">Voice logs</p>
+              <p id="voice-count" class="tile-value">0</p>
+              <p class="tile-meta">entries today</p>
+            </article>
+            <article class="stat-tile coral">
+              <p class="tile-title">Amount</p>
+              <p id="amount-total" class="tile-value">€0</p>
+              <p class="tile-meta">estimated</p>
+            </article>
+          </div>
+
+          <div class="action-row">
+            <button id="show-pdf" class="button is-fullwidth">PDF preview</button>
+            <button id="manual-entry" class="button is-fullwidth is-light">+ Manual entry</button>
+          </div>
+        </section>
+      </div>
     </main>
 
-    <template id="task-item-template">
-      <li class="task-item">
-        <div class="task-main">
-          <p class="task-text"></p>
-          <p class="task-meta"></p>
-        </div>
-        <div class="task-actions">
-          <button class="done-btn" type="button">Mark Done</button>
-          <button class="delete-btn" type="button">Delete</button>
-        </div>
-      </li>
-    </template>
+    <div id="voice-modal" class="modal">
+      <div class="modal-background" data-close="voice-modal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Voice capture</p>
+          <button class="delete" aria-label="close" data-close="voice-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="mb-3">Try command: “Start Acme design review at premium rate.”</p>
+          <label class="label" for="transcript">Transcript</label>
+          <textarea id="transcript" class="textarea" rows="3">I worked 1 hour 20 minutes on UX audit for Acme client at premium rate.</textarea>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" data-close="voice-modal">Cancel</button>
+          <button id="parse-voice" class="button is-success" type="button">Parse with AI</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="ai-modal" class="modal">
+      <div class="modal-background" data-close="ai-modal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">AI confirmation</p>
+          <button class="delete" aria-label="close" data-close="ai-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <div id="ai-preview" class="panel-box"></div>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" data-close="ai-modal">Edit later</button>
+          <button id="confirm-entry" class="button is-success" type="button">Confirm & save</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="pdf-modal" class="modal">
+      <div class="modal-background" data-close="pdf-modal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">PDF report preview</p>
+          <button class="delete" aria-label="close" data-close="pdf-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <div id="pdf-preview" class="panel-box"></div>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" data-close="pdf-modal">Close</button>
+          <button id="download-pdf" class="button is-link is-light" type="button">Download PDF</button>
+        </footer>
+      </div>
+    </div>
 
     <script src="app.js"></script>
   </body>
