@@ -3,62 +3,105 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task Track</title>
+    <title>Flowtime Prototype</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <main class="app-shell">
-      <header class="app-header">
-        <h1>Task Track</h1>
-        <p>Log daily and future tasks from your phone.</p>
-      </header>
+    <main class="section prototype" aria-live="polite">
+      <div class="container is-max-mobile">
+        <header class="prototype-header has-text-centered mb-3">
+          <p class="eyebrow">Voice-first time tracking prototype</p>
+          <h1 id="day-title" class="title is-2 mb-1">Today</h1>
+          <p id="day-subtitle" class="subtitle is-6"></p>
+        </header>
 
-      <section class="card" aria-labelledby="add-task-title">
-        <h2 id="add-task-title">Add Task</h2>
-        <form id="task-form" class="task-form">
-          <label>
-            Task details
-            <textarea id="task-text" required maxlength="240" placeholder="Example: Prepare weekly project update"></textarea>
-          </label>
+        <section class="deck" aria-label="Daily card">
+          <article class="daily-card box">
+            <div class="card-top has-text-centered">
+              <p class="card-title">Things to track</p>
+              <p class="card-number">No. <span id="card-sequence"></span></p>
+            </div>
 
-          <label>
-            Planned date
-            <input id="task-date" type="date" required />
-          </label>
+            <ul id="activity-list" class="activity-list"></ul>
 
-          <button type="submit">Save Task</button>
-        </form>
-      </section>
+            <button id="manual-entry" class="button is-fullwidth is-light is-rounded manual-entry" type="button">
+              + Add manual entry
+            </button>
+          </article>
+        </section>
 
-      <section class="card" aria-labelledby="task-list-title">
-        <h2 id="task-list-title">My Tasks</h2>
-        <div id="empty-state" class="empty-state">No tasks yet. Add one above.</div>
-        <ul id="task-list" class="task-list" aria-live="polite"></ul>
-      </section>
+        <nav class="fixed-grid has-2-cols day-nav" aria-label="Change day">
+          <div class="grid">
+            <button id="prev-day" class="button is-fullwidth" type="button">← Previous day</button>
+            <button id="next-day" class="button is-fullwidth" type="button">Next day →</button>
+          </div>
+        </nav>
 
-      <section class="card" aria-labelledby="report-title">
-        <h2 id="report-title">Monthly Report</h2>
-        <label>
-          Select month
-          <input id="report-month" type="month" />
-        </label>
-        <div id="report-summary" class="report-summary"></div>
-        <ul id="report-list" class="report-list"></ul>
-      </section>
+        <section class="fixed-grid has-2-cols actions" aria-label="Prototype quick actions">
+          <div class="grid">
+            <button id="open-voice" class="button is-fullwidth is-success action-main" type="button">🎙️ Speak to track</button>
+            <button id="show-pdf" class="button is-fullwidth" type="button">PDF preview</button>
+          </div>
+        </section>
+      </div>
     </main>
 
-    <template id="task-item-template">
-      <li class="task-item">
-        <div class="task-main">
-          <p class="task-text"></p>
-          <p class="task-meta"></p>
-        </div>
-        <div class="task-actions">
-          <button class="done-btn" type="button">Mark Done</button>
-          <button class="delete-btn" type="button">Delete</button>
-        </div>
-      </li>
-    </template>
+    <div id="voice-modal" class="modal">
+      <div class="modal-background" data-close="voice-modal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Voice capture</p>
+          <button class="delete" aria-label="close" data-close="voice-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <p class="mb-3">Try command: “Start Acme design review at premium rate.”</p>
+          <label class="label" for="transcript">Transcript</label>
+          <textarea id="transcript" class="textarea" rows="3">I worked 1 hour 20 minutes on UX audit for Acme client at premium rate.</textarea>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" data-close="voice-modal">Cancel</button>
+          <button id="parse-voice" class="button is-success" type="button">Parse with AI</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="ai-modal" class="modal">
+      <div class="modal-background" data-close="ai-modal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">AI confirmation</p>
+          <button class="delete" aria-label="close" data-close="ai-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <div id="ai-preview" class="panel-box"></div>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" data-close="ai-modal">Edit later</button>
+          <button id="confirm-entry" class="button is-success" type="button">Confirm & save</button>
+        </footer>
+      </div>
+    </div>
+
+    <div id="pdf-modal" class="modal">
+      <div class="modal-background" data-close="pdf-modal"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">PDF report preview</p>
+          <button class="delete" aria-label="close" data-close="pdf-modal"></button>
+        </header>
+        <section class="modal-card-body">
+          <div id="pdf-preview" class="panel-box"></div>
+        </section>
+        <footer class="modal-card-foot is-justify-content-flex-end">
+          <button class="button" data-close="pdf-modal">Close</button>
+          <button id="download-pdf" class="button is-link is-light" type="button">Download PDF</button>
+        </footer>
+      </div>
+    </div>
 
     <script src="app.js"></script>
   </body>

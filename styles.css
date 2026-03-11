@@ -1,167 +1,127 @@
 :root {
-  color-scheme: light;
-  --bg: #f5f7fb;
-  --card: #ffffff;
-  --line: #d8deea;
-  --text: #1f2937;
-  --muted: #596579;
-  --primary: #2563eb;
-  --danger: #dc2626;
-  --success: #059669;
-}
-
-* {
-  box-sizing: border-box;
+  --bg: #f5f2ea;
+  --paper: #fffdf8;
+  --line: #d3cdc2;
+  --text: #2e2a26;
+  --muted: #6f6a61;
+  --accent: #88926f;
 }
 
 body {
-  margin: 0;
-  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: var(--bg);
+  min-height: 100vh;
+  background: radial-gradient(circle at top, #f9f5ee, #efe9dd 65%);
   color: var(--text);
 }
 
-.app-shell {
-  max-width: 700px;
+.prototype {
+  max-width: 420px;
   margin: 0 auto;
-  padding: 1rem 0.9rem 2rem;
+  padding-top: 1rem;
 }
 
-.app-header h1 {
+.eyebrow {
   margin: 0;
-  font-size: 1.75rem;
-}
-
-.app-header p {
-  margin-top: 0.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.72rem;
   color: var(--muted);
 }
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 14px;
-  padding: 0.9rem;
-  margin-top: 0.9rem;
+#day-title {
+  font-family: "Cormorant Garamond", Georgia, serif;
 }
 
-h2 {
-  margin-top: 0;
-  font-size: 1.1rem;
-}
-
-.task-form,
-label {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.task-form {
-  gap: 0.8rem;
-}
-
-textarea,
-input,
-button {
-  font: inherit;
-}
-
-textarea,
-input[type="date"],
-input[type="month"] {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.65rem;
-  background: #fff;
-}
-
-button {
-  border: none;
-  border-radius: 10px;
-  padding: 0.6rem 0.75rem;
-  cursor: pointer;
-}
-
-#task-form button {
-  background: var(--primary);
-  color: #fff;
-  font-weight: 600;
-}
-
-.empty-state {
+#day-subtitle {
   color: var(--muted);
-  font-size: 0.95rem;
 }
 
-.task-list,
-.report-list {
+.daily-card {
+  background: var(--paper);
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  box-shadow: 0 12px 30px rgba(59, 46, 24, 0.1);
+  min-height: 73vh;
+  padding: 1rem 0.9rem 0.8rem;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+.card-top {
+  margin-bottom: 0.7rem;
+}
+
+.card-title {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.4rem;
+}
+
+.card-number {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.activity-list {
   list-style: none;
   padding: 0;
-  margin: 0.6rem 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-
-.task-item {
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.7rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-
-.task-text,
-.task-meta {
   margin: 0;
 }
 
-.task-meta {
+.activity-row {
+  display: grid;
+  grid-template-columns: 20px 1fr auto;
+  gap: 0.45rem;
+  align-items: center;
+  min-height: 2.25rem;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.88rem;
+}
+
+.circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid #b5afa2;
+}
+
+.activity-main {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.activity-meta {
   color: var(--muted);
-  font-size: 0.9rem;
-  margin-top: 0.2rem;
+  font-size: 0.8rem;
 }
 
-.task-actions {
-  display: flex;
-  gap: 0.5rem;
-}
-
-.done-btn {
-  background: var(--success);
-  color: white;
-  flex: 1;
-}
-
-.delete-btn {
-  background: #f3f4f6;
-  color: var(--danger);
-  border: 1px solid #e5e7eb;
-  flex: 1;
-}
-
-.report-summary {
-  margin-top: 0.65rem;
-  font-size: 0.95rem;
+.manual-entry {
+  margin-top: 0.8rem;
+  border: 1px dashed #b2ab9e;
+  background: transparent;
   color: var(--muted);
 }
 
-.report-item {
+.day-nav,
+.actions {
+  margin-top: 0.8rem;
+}
+
+.action-main {
+  grid-column: 1 / -1;
+  background: var(--accent);
+}
+
+.panel-box {
+  background: #f9f7f2;
   border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 0.6rem;
+  border-radius: 12px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.45;
 }
 
-@media (min-width: 700px) {
-  .task-item {
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .task-actions {
-    width: 210px;
-  }
+.modal-card {
+  width: min(92vw, 460px);
 }
