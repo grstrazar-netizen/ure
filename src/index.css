@@ -3,6 +3,6 @@
 @tailwind utilities;
 
 body {
-  @apply bg-canvas text-ink antialiased;
+  @apply bg-[#0f1013] text-ink antialiased;
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
 }

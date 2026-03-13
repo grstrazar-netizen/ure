@@ -6,7 +6,7 @@ import { ProposalScreen } from "@/features/proposals/proposal-screen";
 import { TasksScreen } from "@/features/tasks/tasks-screen";
 import { ReportsScreen } from "@/features/reports/reports-screen";
 import { SettingsScreen } from "@/features/settings/settings-screen";
-import { MobileNav } from "@/components/layout/mobile-nav";
+import { MobileNav, type NavItem } from "@/components/layout/mobile-nav";
 import { Button } from "@/components/ui/button";
 
 type Section = "Dashboard" | "Tasks" | "Time" | "Invoices" | "Proposals" | "Reports" | "Settings";
@@ -36,21 +36,22 @@ function renderSection(section: Section) {
 
 export default function App() {
   const [section, setSection] = useState<Section>("Dashboard");
-  const heading = useMemo(() => `${section} · Freelancer OS`, [section]);
+  const heading = useMemo(() => `${section}`, [section]);
 
   return (
-    <div className="mx-auto min-h-screen w-full max-w-[430px] px-3 pb-28 pt-4">
-      <header className="mb-4">
-        <p className="text-xs uppercase tracking-wide text-muted">Flowtime PWA MVP</p>
-        <h1 className="text-2xl font-semibold">{heading}</h1>
+    <div className="mx-auto min-h-screen w-full max-w-[430px] bg-[#efeff2] px-3 pb-28 pt-4 shadow-[0_0_0_1px_rgba(255,255,255,0.08)]">
+      <header className="mb-3">
+        <p className="text-xs uppercase tracking-[0.2em] text-stone-500">Flowtime</p>
+        <h1 className="text-xl font-semibold text-stone-900">{heading}</h1>
       </header>
 
-      <div className="mb-4 flex flex-wrap gap-2">
+      <div className="mb-4 flex gap-2 overflow-x-auto pb-1">
         {sections.map((item) => (
           <Button
             key={item}
             size="sm"
             variant={item === section ? "default" : "soft"}
+            className="shrink-0"
             onClick={() => setSection(item)}
           >
             {item}
@@ -59,7 +60,7 @@ export default function App() {
       </div>
 
       {renderSection(section)}
-      <MobileNav />
+      <MobileNav active={(section === "Reports" || section === "Settings" ? "Dashboard" : section) as NavItem} onChange={(item) => setSection(item)} />
     </div>
   );
 }

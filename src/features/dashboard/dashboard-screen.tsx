@@ -1,55 +1,71 @@
-import { AlertCircle, Banknote, Frog, TrendingUp } from "lucide-react";
+import { BookOpen, CalendarDays, CheckSquare2, Circle, Clock3, Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 
-const matrix = [
-  "Urgent + Important",
-  "Important + Not Urgent",
-  "Urgent + Not Important",
-  "Not Urgent + Not Important",
+const days = [
+  { n: "10", d: "mon" },
+  { n: "11", d: "tue", active: true },
+  { n: "12", d: "wed" },
+  { n: "13", d: "thu" },
+  { n: "14", d: "fri" },
+  { n: "15", d: "sat" },
+  { n: "16", d: "sun" },
+];
+
+const schedule = [
+  { title: "English hometask", icon: BookOpen, tone: "plain" },
+  { title: "Finish design for the project", icon: CheckSquare2, tone: "plain" },
+  { title: "Daily meeting", icon: CalendarDays, tone: "event", time: "11:00 am" },
+  { title: "Lunch", icon: CalendarDays, tone: "event", time: "2:00 pm" },
+  { title: "Research", icon: Search, tone: "plain" },
+  { title: "Publish post", icon: Clock3, tone: "plain" },
+  { title: "Training", icon: CalendarDays, tone: "event", time: "7:00 pm" },
 ];
 
 export function DashboardScreen() {
   return (
-    <section className="space-y-4">
-      <Card className="p-4">
-        <p className="text-xs uppercase tracking-wide text-muted">Today focus</p>
-        <h2 className="mt-1 text-xl font-semibold">Eat the Frog: Send overdue proposal update</h2>
-        <p className="mt-2 text-sm text-muted">Start with the hardest meaningful task first.</p>
-      </Card>
+    <Card className="overflow-hidden rounded-[30px] bg-[#ececf0] p-0">
+      <div className="border-b border-stone-300/70 px-4 pb-4 pt-5">
+        <div className="flex items-start justify-between">
+          <h2 className="text-[52px] font-medium leading-none tracking-tight text-stone-900">11:50</h2>
+          <p className="pt-1 text-right text-xl leading-tight text-stone-800">
+            Feb, 11
+            <br />
+            <span className="text-[22px]">Tuesday</span>
+          </p>
+        </div>
 
-      <Card className="p-4">
-        <h3 className="text-sm font-semibold">Eisenhower matrix</h3>
-        <ul className="mt-3 grid grid-cols-2 gap-2 text-xs">
-          {matrix.map((item) => (
-            <li key={item} className="rounded-2xl border border-stone-200 bg-white p-3">
-              {item}
+        <ul className="mt-5 grid grid-cols-7 gap-1 text-center text-sm text-stone-700">
+          {days.map((day) => (
+            <li key={day.n}>
+              <p className={`mx-auto mb-1 flex h-8 w-8 items-center justify-center rounded-full ${day.active ? "bg-stone-200 text-stone-900" : ""}`}>
+                {day.n}
+              </p>
+              <p className="text-xs text-stone-500">{day.d}</p>
             </li>
           ))}
         </ul>
-      </Card>
-
-      <div className="grid grid-cols-2 gap-3">
-        <Card className="p-3">
-          <p className="flex items-center gap-1 text-xs text-muted"><AlertCircle className="h-3.5 w-3.5" /> Money waiting</p>
-          <p className="mt-1 text-lg font-semibold">€2,140</p>
-          <p className="text-xs text-muted">4 unpaid invoices</p>
-        </Card>
-        <Card className="p-3">
-          <p className="flex items-center gap-1 text-xs text-muted"><Banknote className="h-3.5 w-3.5" /> Money received</p>
-          <p className="mt-1 text-lg font-semibold">€5,820</p>
-          <p className="text-xs text-muted">This month</p>
-        </Card>
-        <Card className="p-3">
-          <p className="flex items-center gap-1 text-xs text-muted"><TrendingUp className="h-3.5 w-3.5" /> Proposal pipeline</p>
-          <p className="mt-1 text-lg font-semibold">6 active</p>
-          <p className="text-xs text-muted">2 need follow-up</p>
-        </Card>
-        <Card className="p-3">
-          <p className="flex items-center gap-1 text-xs text-muted"><Frog className="h-3.5 w-3.5" /> Tax reserve SI</p>
-          <p className="mt-1 text-lg font-semibold">22%</p>
-          <p className="text-xs text-muted">Estimated reserve</p>
-        </Card>
       </div>
-    </section>
+
+      <div className="space-y-2 bg-[#f5f5f8] p-3">
+        {schedule.map(({ title, icon: Icon, tone, time }) => (
+          <div
+            key={title}
+            className={`flex items-center justify-between rounded-2xl px-3 py-3 ${
+              tone === "event" ? "bg-[#c8c2eb]" : "bg-[#e7e7eb]"
+            }`}
+          >
+            <p className="flex items-center gap-2 text-[17px] text-stone-900">
+              <Icon className="h-4 w-4" />
+              {title}
+            </p>
+            {time ? (
+              <span className="rounded-full bg-white/80 px-2.5 py-1 text-xs font-medium text-stone-700">{time}</span>
+            ) : (
+              <Circle className="h-5 w-5 text-stone-400" />
+            )}
+          </div>
+        ))}
+      </div>
+    </Card>
   );
 }
