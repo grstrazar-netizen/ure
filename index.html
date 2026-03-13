@@ -3,63 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Task Track</title>
-    <link rel="stylesheet" href="styles.css" />
+    <meta name="theme-color" content="#f3f1eb" />
+    <title>Flowtime</title>
   </head>
   <body>
-    <main class="app-shell">
-      <header class="app-header">
-        <h1>Task Track</h1>
-        <p>Log daily and future tasks from your phone.</p>
-      </header>
-
-      <section class="card" aria-labelledby="add-task-title">
-        <h2 id="add-task-title">Add Task</h2>
-        <form id="task-form" class="task-form">
-          <label>
-            Task details
-            <textarea id="task-text" required maxlength="240" placeholder="Example: Prepare weekly project update"></textarea>
-          </label>
-
-          <label>
-            Planned date
-            <input id="task-date" type="date" required />
-          </label>
-
-          <button type="submit">Save Task</button>
-        </form>
-      </section>
-
-      <section class="card" aria-labelledby="task-list-title">
-        <h2 id="task-list-title">My Tasks</h2>
-        <div id="empty-state" class="empty-state">No tasks yet. Add one above.</div>
-        <ul id="task-list" class="task-list" aria-live="polite"></ul>
-      </section>
-
-      <section class="card" aria-labelledby="report-title">
-        <h2 id="report-title">Monthly Report</h2>
-        <label>
-          Select month
-          <input id="report-month" type="month" />
-        </label>
-        <div id="report-summary" class="report-summary"></div>
-        <ul id="report-list" class="report-list"></ul>
-      </section>
-    </main>
-
-    <template id="task-item-template">
-      <li class="task-item">
-        <div class="task-main">
-          <p class="task-text"></p>
-          <p class="task-meta"></p>
-        </div>
-        <div class="task-actions">
-          <button class="done-btn" type="button">Mark Done</button>
-          <button class="delete-btn" type="button">Delete</button>
-        </div>
-      </li>
-    </template>
-
-    <script src="app.js"></script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
